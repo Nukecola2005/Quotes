@@ -1,3 +1,8 @@
+<!-- Autor: Nukecola2005
+Datum: 09.04.2023
+Name: Basic Quote Generator -->
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -91,16 +96,16 @@ body {
       let quote = document.getElementById("quote");
       let author = document.getElementById("author");
       const url = "https://api.quotable.io/random";
-
+    
       let lastUpdated = sessionStorage.getItem("lastUpdated");
-
+    
       if (!lastUpdated || new Date() - new Date(lastUpdated) > 86400000) {
         getQuote();
       } else {
         quote.innerText = sessionStorage.getItem("lastQuote");
         author.innerText = sessionStorage.getItem("lastAuthor");
       }
-
+    
       function getQuote() {
         fetch(url)
           .then((data) => data.json())
@@ -113,8 +118,9 @@ body {
           })
           .catch((error) => console.error(error));
       }
-
+    
       setInterval(getQuote, 86400000);
-    </script>
+
+    </script>    
   </body>
 </html>
