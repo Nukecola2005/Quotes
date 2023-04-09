@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quote API</title>
+    <style>
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Athena", sans-serif;
+}
+
+body {
+    background-image: url(hydra_dbbb.gif);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.wrapper {
+  width: 400px;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.container {
+  width: 100%;
+  position: relative;
+  border-radius: 8px;
+  text-align: center;
+  padding: 40px 40px;
+}
+
+.display {
+  background: #F7ECD4;
+  padding: 40px 40px;
+  box-shadow: 0 20px 65px rgba(87, 11, 16, 0.5);
+  text-align: center;
+  position: relative;
+
+  border-radius: 8px;
+
+}
+
+.container p {
+  color: #0D5B5B;
+  line-height: 2;
+  font-size: 19px;
+}
+
+.container h3::before {
+  content: "- ";
+}
+
+.container h3 {
+  font-weight: 600;
+  text-transform: capitalize;
+  color: #8B0000;
+  margin: 20px 0 60px 0;
+}
+
+.container button {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  background-color: #8B0000;
+  border: none;
+  border-radius: 5px;
+}
+
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="display">
+          <p id="quote">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptas,</p>
+
+          <h3 id="author">Lorem, ipsum.</h3>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let quote = document.getElementById("quote");
+      let author = document.getElementById("author");
+      const url = "https://api.quotable.io/random";
+
+      let lastUpdated = sessionStorage.getItem("lastUpdated");
+
+      if (!lastUpdated || new Date() - new Date(lastUpdated) > 10000) {
+        getQuote();
+      } else {
+        quote.innerText = sessionStorage.getItem("lastQuote");
+        author.innerText = sessionStorage.getItem("lastAuthor");
+      }
+
+      function getQuote() {
+        fetch(url)
+          .then((data) => data.json())
+          .then((item) => {
+            quote.innerText = item.content;
+            author.innerText = item.author;
+            sessionStorage.setItem("lastUpdated", new Date().toString());
+            sessionStorage.setItem("lastQuote", item.content);
+            sessionStorage.setItem("lastAuthor", item.author);
+          })
+          .catch((error) => console.error(error));
+      }
+
+      setInterval(getQuote, 10000);
+    </script>
+  </body>
+</html>
